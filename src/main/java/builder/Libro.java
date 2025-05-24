@@ -7,12 +7,8 @@ public class Libro {
     private String autore;
     private String isbn;
     private String genere;
-    private int valutazione;
+    private Valutazione valutazione;
     private StatoLettura stato;
-
-    public enum StatoLettura {
-        LETTO, DA_LEGGERE, IN_LETTURA
-    }
 
     public static class Builder {
 
@@ -23,7 +19,7 @@ public class Libro {
 
         //parametri opzionali
         private String genere;
-        private int valutazione;
+        private Valutazione valutazione;
         private StatoLettura stato;
 
         //costruttore Builder
@@ -38,7 +34,7 @@ public class Libro {
             return this;
         }
 
-        public Builder valutazione(int valutazione) {
+        public Builder valutazione(Valutazione valutazione) {
             this.valutazione = valutazione;
             return this;
         }
@@ -80,7 +76,7 @@ public class Libro {
         return genere;
     }
 
-    public int getValutazione() {
+    public Valutazione getValutazione() {
         return valutazione;
     }
 

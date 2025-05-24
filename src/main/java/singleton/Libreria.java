@@ -1,6 +1,7 @@
 package singleton;
 
 import builder.Libro;
+import strategy.LibreriaStrategy;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +26,12 @@ public class Libreria {
     }
 
     public void rimuoviLibro(Libro libro) {
-        libri.remove(libro);
+        if (libri.contains(libro)) {
+            libri.remove(libro);
+        }
+        else {
+            System.out.println("Libro non presente!");
+        }
     }
 
     public boolean modificaLibro(String isbn, Libro nuovo) {
@@ -40,7 +46,14 @@ public class Libreria {
 
     @Override
     public String toString() {
-        return "Libreria{" + libri +
-                '}';
+        StringBuilder sb = new StringBuilder();
+        for (Libro l : libri) {
+            sb.append(l.toString()).append("\n");
+        }
+        return sb.toString();
+    }
+
+    public List<Libro> eseguiStrategy(LibreriaStrategy strategia) {
+        return strategia.esegui(libri);
     }
 }
