@@ -1,6 +1,7 @@
 package singleton;
 
 import builder.Libro;
+import repository.ArchivioLibreria;
 import strategy.LibreriaStrategy;
 
 import java.util.ArrayList;
@@ -10,7 +11,9 @@ public class Libreria {
     private static Libreria instance = null;
     private List<Libro> libri = new ArrayList<>();
 
-    private Libreria() {}
+    private Libreria() {
+        this.libri = ArchivioLibreria.carica();
+    }
 
     public static Libreria getInstance(){
         if (instance == null) {
@@ -22,12 +25,14 @@ public class Libreria {
     public void aggiungiLibro(Libro libro) {
         if (!libri.contains(libro)) {
             libri.add(libro);
+            ArchivioLibreria.salva(libri);
             }
     }
 
     public void rimuoviLibro(Libro libro) {
         if (libri.contains(libro)) {
             libri.remove(libro);
+            ArchivioLibreria.salva(libri);
         }
         else {
             System.out.println("Libro non presente!");
@@ -38,10 +43,15 @@ public class Libreria {
         for (int i = 0; i < libri.size(); i++) {
             if (libri.get(i).getIsbn().equals(isbn)) {
                 libri.set(i,nuovo);
+                ArchivioLibreria.salva(libri);
                 return true;
             }
         }
         return false;
+    }
+
+    public List<Libro> getLibri() {
+        return new ArrayList<>(libri);  //per sicurezza viene restituita la copia
     }
 
     @Override

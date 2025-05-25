@@ -9,11 +9,10 @@
     <version>1.0-SNAPSHOT</version>
 
     <dependencies>
-        <!-- Dipendenza per gestire i file JSON con Jackson -->
         <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-databind</artifactId>
-            <version>2.15.3</version> <!-- Usa una versione recente -->
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>2.10.1</version>
         </dependency>
     </dependencies>
 </project>

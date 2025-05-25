@@ -20,6 +20,8 @@ public class Prova {
                     .build();
             Libro l7 = new Libro.Builder("Il codice da Vinci","Dan Brown","859913476585").stato(StatoLettura.IN_LETTURA).valutazione(Valutazione.UNA_STELLA).genere("Thriller")
                     .build();
+            Libro l8 = new Libro.Builder("Harry Potter","Dan Brown","85991341377885").stato(StatoLettura.LETTO).valutazione(Valutazione.UNA_STELLA).genere("Thriller")
+                    .build();
 
             Libreria lib = Libreria.getInstance();
             lib.aggiungiLibro(l1);
@@ -29,8 +31,9 @@ public class Prova {
             lib.aggiungiLibro(l5);
             lib.aggiungiLibro(l6);
             lib.aggiungiLibro(l7);
-            //System.out.println(lib);
+            lib.aggiungiLibro(l8);
+            System.out.println(lib);
 
-            System.out.println(lib.eseguiStrategy(new OrdinaPerValutazione()));
+            //System.out.println(lib.eseguiStrategy(new FiltraPerStatoLettura(StatoLettura.IN_LETTURA)));
     }
 }
