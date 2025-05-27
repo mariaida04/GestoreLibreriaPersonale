@@ -23,10 +23,12 @@ public class Libreria {
     }
 
     public void aggiungiLibro(Libro libro) {
-        if (!libri.contains(libro)) {
-            libri.add(libro);
-            ArchivioLibreria.salva(libri);
+        for (Libro l : libri) {
+            if (!l.getIsbn().equals(libro.getIsbn())) {
+                libri.add(libro);
+                ArchivioLibreria.salva(libri);
             }
+        }
     }
 
     public void rimuoviLibro(Libro libro) {
