@@ -17,7 +17,7 @@ public class FiltraPerGenere implements LibreriaStrategy {
     public List<Libro> esegui(List<Libro> lib) {
         List<Libro> ret = new ArrayList<>();
         for(Libro l : lib) {
-            if (l.getGenere().equalsIgnoreCase(genere) || l.getGenere().contains(genere)) {   //gestire casi di upper case o lower case
+            if (l.getGenere().toLowerCase().contains(genere.toLowerCase())) {   //gestire casi di upper case o lower case
                 ret.add(l);
             }
         }

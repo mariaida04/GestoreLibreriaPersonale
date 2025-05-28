@@ -45,7 +45,67 @@ public class Frame extends JFrame {
         scrollPane.setPreferredSize(new Dimension(800,300));
         add(scrollPane, BorderLayout.SOUTH);
 
+
+        //CAMPO PER LA RICERCA
+        JPanel opPanel = new JPanel();
+        opPanel.setLayout(new BoxLayout(opPanel,BoxLayout.Y_AXIS));
+
+        //pannello ricerca
+        JPanel ricerca = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        JTextField campoRicerca = new JTextField(15);
+
+        //menù a tendina per selezionare l'attributo per cui cercare
+        String[] attributi = {"Titolo","Autore","ISBN"};
+        JComboBox<String> ricercaBox = new JComboBox<>(attributi);
+
+        //bottone ricerca
+        JButton cercaButton = new JButton("Cerca");
+
+        ricerca.add(new Label("Cerca per:"));
+        ricerca.add(ricercaBox);
+        ricerca.add(campoRicerca);
+        ricerca.add(cercaButton);
+
+        //pannello filtra
+        JPanel filtra = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        JTextField campoFiltra = new JTextField(15);
+
+        //menù a tendina per selezionare l'attributo per cui filtrare
+        String[] filtri = {"Genere","Stato"};
+        JComboBox<String> filtraBox = new JComboBox<>(filtri);
+
+        //bottone filtra
+        JButton filtraButton = new JButton("Filtra");
+
+        filtra.add(new Label("Filtra per:"));
+        filtra.add(filtraBox);
+        filtra.add(campoFiltra);
+        filtra.add(filtraButton);
+
+        //pannello ordina
+        JPanel ordina = new JPanel(new FlowLayout(FlowLayout.LEFT));
+
+        //menù a tendina per selezionare l'attributo per cui ordinare
+        String[] ordinamento = {"Titolo","Valutazione"};
+        JComboBox<String> ordinaBox = new JComboBox<>(ordinamento);
+
+        //bottone ordina
+        JButton ordinaButton = new JButton("Ordina");
+
+        ordina.add(new JLabel("Ordina per:"));
+        ordina.add(ordinaBox);
+        opPanel.add(ordinaButton);
+
+        //listener per effettuare l'operazione
+
+        opPanel.add(ricerca);
+        opPanel.add(filtra);
+        opPanel.add(ordina);
+
+        add(opPanel, BorderLayout.NORTH);
+
         setVisible(true);
+
     }
 
     private void mostraLibreria() {
