@@ -1,15 +1,23 @@
 package gui;
 
+import builder.Libro;
+import builder.StatoLettura;
+import builder.Valutazione;
+import command.AggiungiLibroCommand;
+import command.Command;
+import factoryMethod.LibroFactory;
 import singleton.Libreria;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.Optional;
 
 public class Frame extends JFrame {
     private JTextArea textArea;
     private JButton aggiungi;
     private JButton rimuovi;
     private JButton modifica;
+    private LibreriaController controller;
 
     public Frame() {
         super("Gestione Libreria Personale");
@@ -30,6 +38,10 @@ public class Frame extends JFrame {
         aggiungi = new JButton("Aggiungi libro");
         rimuovi = new JButton("Rimuovi libro");
         modifica = new JButton("Modifica libro");
+
+        aggiungi.addActionListener((e -> aggiungiLibro()));
+        rimuovi.addActionListener(e -> rimuoviLibro());
+        modifica.addActionListener(e -> modificaLibro());
 
         comandiPanel.add(visualizzaButton);
         comandiPanel.add(aggiungi);
@@ -108,7 +120,97 @@ public class Frame extends JFrame {
 
     }
 
-    private void mostraLibreria() {
+    private void aggiungiLibro() {
+        JTextField titolo = new JTextField();
+        JTextField autore = new JTextField();
+        JTextField isbn = new JTextField();
+        JTextField genere = new JTextField();
+
+        JComboBox<String> valutazione = new JComboBox<>(new String[] {
+            "UNA_STELLA","DUE_STELLE","TRE_STELLE","QUATTRO_STELLE","CINQUE_STELLE"
+        });
+
+        JComboBox<String> stato = new JComboBox<>(new String[] {
+                "DA_LEGGERE","IN_LETTURA","COMPLETATO"
+        });
+
+        JPanel form = new JPanel(new GridLayout(0,1));
+        form.add((new JLabel("Titolo:")));
+        form.add((titolo));
+        form.add((new JLabel("Autore:")));
+        form.add((autore));
+        form.add((new JLabel("ISBN:")));
+        form.add((isbn));
+        form.add((new JLabel("Genere:")));
+        form.add((genere));
+        form.add((new JLabel("Valutazione:")));
+        form.add((valutazione));
+        form.add((new JLabel("Stato lettura:")));
+        form.add((stato));
+
+        //per mostrare la finestra di dialogo
+        int result = JOptionPane.showConfirmDialog(this,form,"Aggiungi un nuovo libro",
+                    JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+
+        if (result == JOptionPane.OK_OPTION) {
+                controller.aggiunta(titolo.getText(),autore.getText(),isbn.getText(),genere.getText(),
+                        (String) valutazione.getSelectedItem(),
+                        (String) stato.getSelectedItem());
+        }
+    }
+
+    //solo titolo va bene???
+    private void rimuoviLibro() {
+        String titolo = JOptionPane.showInputDialog(this, "Inserisci il titolo del libro da rimuovere:");
+        if (titolo != null && !titolo.isBlank()) {
+            controller.rimozione(titolo.trim());
+        }
+    }
+
+    private void modificaLibro() {
+        JTextField isbnCercato = new JTextField();
+        JTextField nuovoTitolo = new JTextField();
+        JTextField nuovoAutore = new JTextField();
+        JTextField nuovoGenere = new JTextField();
+        JTextField nuovoIsbn = new JTextField();
+
+        JComboBox<String> nuovaValutazione = new JComboBox<>(new String[] {
+                "UNA_STELLA","DUE_STELLE","TRE_STELLE","QUATTRO_STELLE","CINQUE_STELLE"
+        });
+
+        JComboBox<String> nuovoStato = new JComboBox<>(new String[] {
+                "DA_LEGGERE","IN_LETTURA","COMPLETATO"
+        });
+
+        JPanel panel = new JPanel(new GridLayout(0,1));
+        panel.add(new Label("ISBN del libro da modificare:"));
+        panel.add(isbnCercato);
+        panel.add(new Label("Nuovo titolo:"));
+        panel.add(nuovoTitolo);
+        panel.add(new Label("Nuovo autore:"));
+        panel.add(nuovoAutore);
+        panel.add(new Label("Nuovo genere:"));
+        panel.add(nuovoGenere);
+        panel.add(new Label("Nuovo ISBN:"));
+        panel.add(nuovoIsbn);
+        panel.add(new Label("Nuova valutazione:"));
+        panel.add(nuovaValutazione);
+        panel.add(new Label("Nuovo stato:"));
+        panel.add(nuovoStato);
+
+        int res = JOptionPane.showConfirmDialog(this,panel, "Modifica libro",
+                JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+
+        if (res == JOptionPane.OK_OPTION) {
+            controller.modifica(isbnCercato.getText().trim(), nuovoTitolo.getText().trim(), nuovoAutore.getText().trim(),
+                    nuovoGenere.getText().trim(), nuovoIsbn.getText().trim(),
+                    (String) nuovaValutazione.getSelectedItem(), (String) nuovoStato.getSelectedItem());
+        }
+
+
+    }
+
+    public void mostraLibreria() {
         Libreria libreria = Libreria.getInstance();
         textArea.setText(libreria.toString()); //stampa ogni libro
     }
