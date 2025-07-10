@@ -1,66 +1,26 @@
 [
   {
-    "titolo": "Piccole Donne",
-    "autore": "Louisa May Alcott",
-    "isbn": "858443385",
-    "genere": "Fantasy",
+    "titolo": "Assassinio sul Nilo",
+    "autore": "Agatha Christie",
+    "isbn": "9788804728160",
+    "genere": "Giallo",
+    "valutazione": "QUATTRO_STELLE",
+    "stato": "COMPLETATO"
+  },
+  {
+    "titolo": "Le coordinate della felicità",
+    "autore": "Gianluca Gotto",
+    "isbn": "9788804745693",
+    "genere": "",
     "valutazione": "CINQUE_STELLE",
-    "stato": "LETTO"
+    "stato": "IN_LETTURA"
   },
   {
     "titolo": "Il piccolo principe",
     "autore": "Antoine de Saint-Exupéry",
-    "isbn": "858448785",
-    "genere": "Romanzo bambini",
-    "valutazione": "DUE_STELLE",
-    "stato": "LETTO"
-  },
-  {
-    "titolo": "1984",
-    "autore": "George Orwell",
-    "isbn": "85987548785",
-    "genere": "Storico",
-    "valutazione": "CINQUE_STELLE",
-    "stato": "DA_LEGGERE"
-  },
-  {
-    "titolo": "Il nome della rosa",
-    "autore": "Umberto Eco",
-    "isbn": "8545748785",
-    "genere": "Saggio",
+    "isbn": "9788804351035",
+    "genere": "",
     "valutazione": "TRE_STELLE",
-    "stato": "IN_LETTURA"
-  },
-  {
-    "titolo": "La coscienza di Zeno",
-    "autore": "George Orwell",
-    "isbn": "85993148785",
-    "genere": "Romanzo",
-    "valutazione": "QUATTRO_STELLE",
     "stato": "DA_LEGGERE"
-  },
-  {
-    "titolo": "La divina commedia",
-    "autore": "Dante Alighieri",
-    "isbn": "8599148785",
-    "genere": "Classico",
-    "valutazione": "DUE_STELLE",
-    "stato": "LETTO"
-  },
-  {
-    "titolo": "Il codice da Vinci",
-    "autore": "Dan Brown",
-    "isbn": "859913476585",
-    "genere": "Thriller",
-    "valutazione": "UNA_STELLA",
-    "stato": "IN_LETTURA"
-  },
-  {
-    "titolo": "Harry Potter",
-    "autore": "Dan Brown",
-    "isbn": "85991341377885",
-    "genere": "Thriller",
-    "valutazione": "UNA_STELLA",
-    "stato": "LETTO"
   }
 ]

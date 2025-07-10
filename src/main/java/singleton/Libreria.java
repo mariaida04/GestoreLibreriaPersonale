@@ -24,11 +24,13 @@ public class Libreria {
 
     public void aggiungiLibro(Libro libro) {
         for (Libro l : libri) {
-            if (!l.getIsbn().equals(libro.getIsbn())) {
-                libri.add(libro);
-                ArchivioLibreria.salva(libri);
+            if (l.getIsbn().equals(libro.getIsbn())) {
+                System.out.println("Libro già presente con ISBN: " + libro.getIsbn());
+                return;
             }
         }
+        libri.add(libro);
+        ArchivioLibreria.salva(libri);
     }
 
     public void rimuoviLibro(Libro libro) {

@@ -19,6 +19,6 @@ public class OrdinaPerValutazione implements LibreriaStrategy {
                 return l1.getValutazione().compareTo(l2.getValutazione());
             }
         });
-        return copia;   //per vederli da 5 stelle a 1 stella, fare return copia.reversed()
+        return copia;
     }
 }

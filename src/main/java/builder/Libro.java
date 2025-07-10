@@ -112,6 +112,6 @@ public class Libro {
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(isbn);
+        return isbn.hashCode();
     }
 }

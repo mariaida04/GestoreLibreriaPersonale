@@ -16,8 +16,8 @@ public class RicercaPerAutore implements LibreriaStrategy {
     public List<Libro> esegui(List<Libro> lib) {
         List<Libro> ret = new ArrayList<>();
         for (Libro l : lib) {
-            if ((l.getAutore().toLowerCase().replaceAll("[\\s.-]", "")    //per evitare che non trovi J.K.Rowling se cercato senza punti ad es.
-                    .equals(autore.toLowerCase().replaceAll("[\\s.-]", "")))) {
+            if ((l.getAutore().toLowerCase().replaceAll("\\p{Punct}", "").replaceAll("[\\s.-]", "")    //per evitare che non trovi J.K.Rowling se cercato senza punti ad es.
+                    .contains(autore.toLowerCase().replaceAll("\\p{Punct}", "").replaceAll("[\\s.-]", "")))) {
                 ret.add(l);
             }
         }

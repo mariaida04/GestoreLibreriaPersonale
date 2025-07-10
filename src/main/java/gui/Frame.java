@@ -1,23 +1,25 @@
 package gui;
 
 import builder.Libro;
-import builder.StatoLettura;
-import builder.Valutazione;
-import command.AggiungiLibroCommand;
-import command.Command;
-import factoryMethod.LibroFactory;
 import singleton.Libreria;
-
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
 import java.awt.*;
-import java.util.Optional;
+import java.util.List;
 
 public class Frame extends JFrame {
-    private JTextArea textArea;
+    private JTable tabella;
+    private DefaultTableModel tableModel;
     private JButton aggiungi;
     private JButton rimuovi;
     private JButton modifica;
     private LibreriaController controller;
+    private JComboBox<String> ricercaBox;
+    private JTextField campoRicerca;
+    private JComboBox<String> ordinaBox;
+    private JComboBox<String> filtraBox;
+    private JTextField campoFiltra;
 
     public Frame() {
         super("Gestione Libreria Personale");
@@ -25,6 +27,7 @@ public class Frame extends JFrame {
         setSize(800, 600);
         setLocationRelativeTo(null);  //per far apparire al centro la finestra
         setLayout(new BorderLayout());
+
 
         //COMANDI
         //layout
@@ -39,10 +42,6 @@ public class Frame extends JFrame {
         rimuovi = new JButton("Rimuovi libro");
         modifica = new JButton("Modifica libro");
 
-        aggiungi.addActionListener((e -> aggiungiLibro()));
-        rimuovi.addActionListener(e -> rimuoviLibro());
-        modifica.addActionListener(e -> modificaLibro());
-
         comandiPanel.add(visualizzaButton);
         comandiPanel.add(aggiungi);
         comandiPanel.add(rimuovi);
@@ -51,9 +50,14 @@ public class Frame extends JFrame {
         add(comandiPanel, BorderLayout.CENTER);
 
         //AREA TESTUALE
-        textArea = new JTextArea();
-        textArea.setEditable(false);
-        JScrollPane scrollPane = new JScrollPane(textArea);
+        String[] colonne = {"Titolo", "Autore", "ISBN", "Genere", "Valutazione", "Stato"};
+        tableModel = new DefaultTableModel(colonne, 0);
+        tabella = new JTable(tableModel);
+        JTableHeader header = tabella.getTableHeader();
+        header.setBackground(Color.BLUE);
+        header.setBackground(Color.WHITE);
+        header.setFont(new Font("Arial", Font.BOLD, 14));
+        JScrollPane scrollPane = new JScrollPane(tabella);
         scrollPane.setPreferredSize(new Dimension(800,300));
         add(scrollPane, BorderLayout.SOUTH);
 
@@ -64,11 +68,11 @@ public class Frame extends JFrame {
 
         //pannello ricerca
         JPanel ricerca = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        JTextField campoRicerca = new JTextField(15);
+        campoRicerca = new JTextField(15);
 
         //menù a tendina per selezionare l'attributo per cui cercare
-        String[] attributi = {"Titolo","Autore","ISBN"};
-        JComboBox<String> ricercaBox = new JComboBox<>(attributi);
+        String[] attributi = {"Seleziona","Titolo","Autore","ISBN"};
+        ricercaBox = new JComboBox<>(attributi);
 
         //bottone ricerca
         JButton cercaButton = new JButton("Cerca");
@@ -80,11 +84,11 @@ public class Frame extends JFrame {
 
         //pannello filtra
         JPanel filtra = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        JTextField campoFiltra = new JTextField(15);
+        campoFiltra = new JTextField(15);
 
         //menù a tendina per selezionare l'attributo per cui filtrare
-        String[] filtri = {"Genere","Stato"};
-        JComboBox<String> filtraBox = new JComboBox<>(filtri);
+        String[] filtri = {"Seleziona","Genere","Stato"};
+        filtraBox = new JComboBox<>(filtri);
 
         //bottone filtra
         JButton filtraButton = new JButton("Filtra");
@@ -98,15 +102,15 @@ public class Frame extends JFrame {
         JPanel ordina = new JPanel(new FlowLayout(FlowLayout.LEFT));
 
         //menù a tendina per selezionare l'attributo per cui ordinare
-        String[] ordinamento = {"Titolo","Valutazione"};
-        JComboBox<String> ordinaBox = new JComboBox<>(ordinamento);
+        String[] ordinamento = {"Seleziona","Titolo","Valutazione"};
+        ordinaBox = new JComboBox<>(ordinamento);
 
         //bottone ordina
         JButton ordinaButton = new JButton("Ordina");
 
-        ordina.add(new JLabel("Ordina per:"));
+        ordina.add(new Label("Ordina per:"));
         ordina.add(ordinaBox);
-        opPanel.add(ordinaButton);
+        ordina.add(ordinaButton);
 
         //listener per effettuare l'operazione
 
@@ -118,6 +122,16 @@ public class Frame extends JFrame {
 
         setVisible(true);
 
+        aggiungi.addActionListener((e -> aggiungiLibro()));
+        rimuovi.addActionListener(e -> rimuoviLibro());
+        modifica.addActionListener(e -> modificaLibro());
+        cercaButton.addActionListener(e -> ricercaLibro());
+        ordinaButton.addActionListener(e -> gestioneOrdinamento());
+        filtraButton.addActionListener(e -> gestioneFiltro());
+    }
+
+    public void setController(LibreriaController controller) {
+        this.controller = controller;
     }
 
     private void aggiungiLibro() {
@@ -127,11 +141,11 @@ public class Frame extends JFrame {
         JTextField genere = new JTextField();
 
         JComboBox<String> valutazione = new JComboBox<>(new String[] {
-            "UNA_STELLA","DUE_STELLE","TRE_STELLE","QUATTRO_STELLE","CINQUE_STELLE"
+            "Seleziona","UNA_STELLA","DUE_STELLE","TRE_STELLE","QUATTRO_STELLE","CINQUE_STELLE"
         });
 
         JComboBox<String> stato = new JComboBox<>(new String[] {
-                "DA_LEGGERE","IN_LETTURA","COMPLETATO"
+                "Seleziona","DA_LEGGERE","IN_LETTURA","COMPLETATO"
         });
 
         JPanel form = new JPanel(new GridLayout(0,1));
@@ -153,17 +167,29 @@ public class Frame extends JFrame {
                     JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
 
         if (result == JOptionPane.OK_OPTION) {
-                controller.aggiunta(titolo.getText(),autore.getText(),isbn.getText(),genere.getText(),
-                        (String) valutazione.getSelectedItem(),
-                        (String) stato.getSelectedItem());
+                String titoloNext = titolo.getText().trim();
+                String autoreNext = autore.getText().trim();
+                String isbnNext = isbn.getText().trim();
+                String genereNext = genere.getText().trim();
+                String valutazioneSel = (String) valutazione.getSelectedItem();
+                String statoSel = (String) stato.getSelectedItem();
+
+            if (titoloNext.isEmpty() || autoreNext.isEmpty() || isbnNext.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Titolo, autore ed ISBN devono essere compilati.");
+                return;
+            }
+
+            String valEff = valutazioneSel.equals("Seleziona") ? null : valutazioneSel;
+            String statoEff = statoSel.equals("Seleziona") ? null : statoSel;
+
+            controller.aggiunta(titoloNext,autoreNext,isbnNext,genereNext, valEff,statoEff);
         }
     }
 
-    //solo titolo va bene???
     private void rimuoviLibro() {
-        String titolo = JOptionPane.showInputDialog(this, "Inserisci il titolo del libro da rimuovere:");
-        if (titolo != null && !titolo.isBlank()) {
-            controller.rimozione(titolo.trim());
+        String isbn = JOptionPane.showInputDialog(this, "Inserisci il codice ISBN del libro da rimuovere:");
+        if (isbn != null && !isbn.isBlank()) {
+            controller.rimozione(isbn.trim());
         }
     }
 
@@ -175,11 +201,11 @@ public class Frame extends JFrame {
         JTextField nuovoIsbn = new JTextField();
 
         JComboBox<String> nuovaValutazione = new JComboBox<>(new String[] {
-                "UNA_STELLA","DUE_STELLE","TRE_STELLE","QUATTRO_STELLE","CINQUE_STELLE"
+                "Seleziona","UNA_STELLA","DUE_STELLE","TRE_STELLE","QUATTRO_STELLE","CINQUE_STELLE"
         });
 
         JComboBox<String> nuovoStato = new JComboBox<>(new String[] {
-                "DA_LEGGERE","IN_LETTURA","COMPLETATO"
+                "Seleziona","DA_LEGGERE","IN_LETTURA","COMPLETATO"
         });
 
         JPanel panel = new JPanel(new GridLayout(0,1));
@@ -202,18 +228,81 @@ public class Frame extends JFrame {
                 JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
 
         if (res == JOptionPane.OK_OPTION) {
-            controller.modifica(isbnCercato.getText().trim(), nuovoTitolo.getText().trim(), nuovoAutore.getText().trim(),
-                    nuovoGenere.getText().trim(), nuovoIsbn.getText().trim(),
-                    (String) nuovaValutazione.getSelectedItem(), (String) nuovoStato.getSelectedItem());
+            String isbnDaModificare = isbnCercato.getText().trim();
+
+            if (isbnDaModificare.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Inserisci l'ISBN del libro da modificare.");
+                return;
+            }
+
+            String titolo = nuovoTitolo.getText().trim();
+            String autore = nuovoAutore.getText().trim();
+            String isbn = nuovoIsbn.getText().trim();
+            String genere = nuovoGenere.getText().trim();
+            String valutazioneSel = (String) nuovaValutazione.getSelectedItem();
+            String statoSel = (String) nuovoStato.getSelectedItem();
+
+            titolo = titolo.isEmpty() ? null : titolo;
+            autore = autore.isEmpty() ? null : autore;
+            isbn = isbn.isEmpty() ? null : isbn;
+            titolo = titolo.isEmpty() ? null : titolo;
+            genere = genere.isEmpty() ? null : genere;
+
+            valutazioneSel = valutazioneSel.equals("Seleziona") ? null : valutazioneSel;
+            statoSel = statoSel.equals("Seleziona") ? null : statoSel;
+
+
+            controller.modifica(isbnDaModificare, titolo, autore, isbn, genere, valutazioneSel, statoSel);
         }
-
-
     }
 
+    private void ricercaLibro() {
+        String attributo = (String) ricercaBox.getSelectedItem();
+        String valore = campoRicerca.getText().trim();
+
+        if (!valore.isEmpty()) {
+            controller.ricerca(attributo,valore);
+        }
+        else {
+            JOptionPane.showMessageDialog(this, "Inserisci un valore da cercare.");
+        }
+    }
+
+    private void gestioneOrdinamento() {
+        String criterio = (String) ordinaBox.getSelectedItem();
+        controller.ordina(criterio);
+    }
+
+    private void gestioneFiltro() {
+        String criterio = (String) filtraBox.getSelectedItem();
+        String valore = campoFiltra.getText().trim();
+
+        if (valore.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Inserisci un valore per cui filtrare.");
+            return;
+        }
+        controller.filtra(criterio, valore);
+    }
+
+    //per mostrare una lista filtrata o ordinata
+    public void mostraLibri(List<Libro> lista) {
+        tableModel.setRowCount(0);
+
+        if (lista.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "La libreria è vuota.");
+        }
+        else {
+            for (Libro l : lista) {
+                Object[] riga = { l.getTitolo(), l.getAutore(), l.getIsbn(),
+                        l.getGenere(), l.getValutazione().name(), l.getStato().name()
+                };
+                tableModel.addRow(riga);
+            }
+        }
+    }
+
+    //per mostrare tutta la libreria
     public void mostraLibreria() {
-        Libreria libreria = Libreria.getInstance();
-        textArea.setText(libreria.toString()); //stampa ogni libro
+        mostraLibri(Libreria.getInstance().getLibri());
     }
 }
-
-//textField per inserire un campo di testo in cui scrivere (es. per la ricerca di autore, libro, ecc)

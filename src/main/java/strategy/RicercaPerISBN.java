@@ -16,7 +16,7 @@ public class RicercaPerISBN implements LibreriaStrategy {
     public List<Libro> esegui(List<Libro> lib) {
         List<Libro> ret = new ArrayList<>();
         for (Libro l : lib) {
-            if (l.getIsbn().equals(isbn)) {
+            if (l.getIsbn().equalsIgnoreCase(isbn)) {
                 ret.add(l);
             }
         }

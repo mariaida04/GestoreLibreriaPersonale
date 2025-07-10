@@ -16,7 +16,8 @@ public class RicercaPerTitolo implements LibreriaStrategy {
     public List<Libro> esegui(List<Libro> lib) {
         List<Libro> ret = new ArrayList<>();
         for (Libro l : lib) {
-            if (l.getTitolo().equalsIgnoreCase(titolo)) {
+            if (l.getTitolo().toLowerCase().replaceAll("\\p{Punct}", "").replaceAll("[\\s.-]", "")
+                    .contains(titolo.toLowerCase().replaceAll("\\p{Punct}", "").replaceAll("[\\s.-]", ""))) {
                 ret.add(l);
             }
         }
