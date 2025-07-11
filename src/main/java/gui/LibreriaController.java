@@ -16,19 +16,18 @@ import java.util.List;
 
 public class LibreriaController {
     private Frame frame;
-    private LibroFactory libroFactory;
 
     public LibreriaController(Frame frame) {
         this.frame = frame;
-        this.libroFactory = new LibroFactory();
     }
 
     public void aggiunta(String titolo, String autore, String isbn, String genere, String valutazioneStr, String statoStr) {
         try {
-            Valutazione valutazione = Valutazione.valueOf(valutazioneStr);
-            StatoLettura stato = StatoLettura.valueOf(statoStr);
+            String genereFinale = (genere != null && !genere.isBlank()) ? genere : null;
+            Valutazione valutazione = (valutazioneStr != null && !valutazioneStr.equals("Seleziona")) ? Valutazione.valueOf(valutazioneStr) : null;
+            StatoLettura stato = (statoStr != null && ! statoStr.equals("Seleziona")) ? StatoLettura.valueOf(statoStr) : null;
 
-            Libro libro = LibroFactory.creaLibro(titolo, autore, isbn, genere, valutazione, stato);
+            Libro libro = LibroFactory.creaLibro(titolo, autore, isbn, genereFinale, valutazione, stato);
 
             Command comando = new AggiungiLibroCommand(Libreria.getInstance(), libro);
             comando.esegui();
@@ -37,11 +36,9 @@ public class LibreriaController {
         } catch (Exception e) {
             JOptionPane.showMessageDialog(frame, "Errore nella creazione del libro: " + e.getMessage(),
                     "Errore", JOptionPane.ERROR_MESSAGE);
-            e.printStackTrace();
         }
     }
 
-    //completare!!!
     public void rimozione(String isbn) {
         Libreria libreria = Libreria.getInstance();
         Libro daRimuovere = null;
@@ -63,8 +60,9 @@ public class LibreriaController {
         }
     }
 
+    //aggiustare modifica per i campi valutazione e stato
     public void modifica(String isbnDaModificare, String nuovoTitolo, String nuovoAutore,
-                         String nuovoGenere, String nuovoIsbn, String nuovaValutazione, String nuovoStato) {
+                         String nuovoIsbn, String nuovoGenere, String nuovaValutazione, String nuovoStato) {
         Libreria libreria = Libreria.getInstance();
         Libro daModificare = null;
 
@@ -80,13 +78,13 @@ public class LibreriaController {
         }
 
         try {
-            String titoloFinale = (nuovoTitolo != null) ? nuovoTitolo : daModificare.getTitolo();
-            String autoreFinale = (nuovoAutore != null) ? nuovoAutore : daModificare.getAutore();
-            String genereFinale = (nuovoGenere != null) ? nuovoGenere : daModificare.getGenere();
-            String isbnFinale = (nuovoIsbn != null) ? nuovoIsbn : daModificare.getIsbn();
+            String titoloFinale = (nuovoTitolo != null && !nuovoTitolo.isBlank()) ? nuovoTitolo : daModificare.getTitolo();
+            String autoreFinale = (nuovoAutore != null && !nuovoAutore.isBlank()) ? nuovoAutore : daModificare.getAutore();
+            String genereFinale = (nuovoGenere != null && !nuovoGenere.isBlank()) ? nuovoGenere : daModificare.getGenere();
+            String isbnFinale = (nuovoIsbn != null && !nuovoIsbn.isBlank()) ? nuovoIsbn : daModificare.getIsbn();
 
-            Valutazione valFinale = (nuovaValutazione != null) ? Valutazione.valueOf(nuovaValutazione) : daModificare.getValutazione();
-            StatoLettura statoFinale = (nuovoStato != null) ? StatoLettura.valueOf(nuovoStato) : daModificare.getStato();
+            Valutazione valFinale = (!"Seleziona".equals(nuovaValutazione)) ? Valutazione.valueOf(nuovaValutazione) : daModificare.getValutazione();
+            StatoLettura statoFinale = (!"Seleziona".equals(nuovoStato)) ? StatoLettura.valueOf(nuovoStato) : daModificare.getStato();
 
             Libro modificato = LibroFactory.creaLibro(titoloFinale,autoreFinale,isbnFinale,genereFinale,valFinale,statoFinale);
 
@@ -139,7 +137,7 @@ public class LibreriaController {
     }
 
     public void ordina(String criterio) {
-        if (criterio.equals("Seleziona")) {
+        if (criterio == null || criterio.equals("Seleziona")) {
             JOptionPane.showMessageDialog(frame, "Seleziona un criterio valido per l'ordinamento.");
             return;
         }
@@ -162,7 +160,7 @@ public class LibreriaController {
     }
 
     public void filtra(String criterio, String valore) {
-        if (criterio.equals("Seleziona")) {
+        if (criterio == null || criterio.equals("Seleziona")) {
             JOptionPane.showMessageDialog(frame, "Seleziona un criterio valido per il filtraggio.");
             return;
         }

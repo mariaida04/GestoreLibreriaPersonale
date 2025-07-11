@@ -16,7 +16,13 @@ public class OrdinaPerValutazione implements LibreriaStrategy {
         copia.sort(new Comparator<Libro>() {
             @Override
             public int compare(Libro l1, Libro l2) {
-                return l1.getValutazione().compareTo(l2.getValutazione());
+                Valutazione v1 = l1.getValutazione();
+                Valutazione v2 = l2.getValutazione();
+
+                if (v1 == null && v2 == null) return 0;
+                if (v1 == null) return 1;
+                if (v2 == null) return -1;
+                return v1.compareTo(v2);
             }
         });
         return copia;

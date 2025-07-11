@@ -24,6 +24,12 @@ public class Libro {
 
         //costruttore Builder
         public Builder(String titolo, String autore, String isbn) {
+            if (titolo == null || titolo.isBlank())
+                throw new IllegalArgumentException("Titolo obbligatorio");
+            if (autore == null || autore.isBlank())
+                throw new IllegalArgumentException("Autore obbligatorio");
+            if (isbn == null || isbn.isBlank())
+                throw new IllegalArgumentException("ISBN obbligatorio");
             this.titolo = titolo;
             this.autore = autore;
             this.isbn = isbn;
@@ -107,11 +113,11 @@ public class Libro {
         Libro l = (Libro) x;
         if (this.isbn == null && l.isbn != null)
             return false;
-        return this.isbn.equals(l.isbn);
+        return Objects.equals(this.isbn, l.isbn);
     }
 
     @Override
     public int hashCode() {
-        return isbn.hashCode();
+        return Objects.hash(isbn);
     }
 }

@@ -215,10 +215,10 @@ public class Frame extends JFrame {
         panel.add(nuovoTitolo);
         panel.add(new Label("Nuovo autore:"));
         panel.add(nuovoAutore);
-        panel.add(new Label("Nuovo genere:"));
-        panel.add(nuovoGenere);
         panel.add(new Label("Nuovo ISBN:"));
         panel.add(nuovoIsbn);
+        panel.add(new Label("Nuovo genere:"));
+        panel.add(nuovoGenere);
         panel.add(new Label("Nuova valutazione:"));
         panel.add(nuovaValutazione);
         panel.add(new Label("Nuovo stato:"));
@@ -235,22 +235,20 @@ public class Frame extends JFrame {
                 return;
             }
 
-            String titolo = nuovoTitolo.getText().trim();
-            String autore = nuovoAutore.getText().trim();
-            String isbn = nuovoIsbn.getText().trim();
-            String genere = nuovoGenere.getText().trim();
+            String titolo = nuovoTitolo.getText();
+            String autore = nuovoAutore.getText();
+            String isbn = nuovoIsbn.getText();
+            String genere = nuovoGenere.getText();
             String valutazioneSel = (String) nuovaValutazione.getSelectedItem();
             String statoSel = (String) nuovoStato.getSelectedItem();
 
-            titolo = titolo.isEmpty() ? null : titolo;
-            autore = autore.isEmpty() ? null : autore;
-            isbn = isbn.isEmpty() ? null : isbn;
-            titolo = titolo.isEmpty() ? null : titolo;
-            genere = genere.isEmpty() ? null : genere;
+            titolo = (titolo != null && !titolo.trim().isEmpty()) ? titolo.trim() : null;
+            autore = (autore != null && !autore.trim().isEmpty()) ? autore.trim() : null;
+            isbn = (isbn != null && !isbn.isEmpty()) ? isbn.trim() : null;
+            genere = (genere != null && !genere.trim().isEmpty()) ? genere.trim() : null;
 
-            valutazioneSel = valutazioneSel.equals("Seleziona") ? null : valutazioneSel;
-            statoSel = statoSel.equals("Seleziona") ? null : statoSel;
-
+            valutazioneSel = (valutazioneSel != null && valutazioneSel.equals("Seleziona")) ? null : valutazioneSel;
+            statoSel = (statoSel != null && statoSel.equals("Seleziona")) ? null : statoSel;
 
             controller.modifica(isbnDaModificare, titolo, autore, isbn, genere, valutazioneSel, statoSel);
         }
@@ -294,7 +292,8 @@ public class Frame extends JFrame {
         else {
             for (Libro l : lista) {
                 Object[] riga = { l.getTitolo(), l.getAutore(), l.getIsbn(),
-                        l.getGenere(), l.getValutazione().name(), l.getStato().name()
+                        l.getGenere(), l.getValutazione() != null ? l.getValutazione().name() : "",
+                        l.getStato() != null ? l.getStato().name() : ""
                 };
                 tableModel.addRow(riga);
             }

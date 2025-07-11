@@ -24,7 +24,7 @@ public class Libreria {
 
     public void aggiungiLibro(Libro libro) {
         for (Libro l : libri) {
-            if (l.getIsbn().equals(libro.getIsbn())) {
+            if (l.getIsbn().trim().equalsIgnoreCase(libro.getIsbn().trim())) {
                 System.out.println("Libro già presente con ISBN: " + libro.getIsbn());
                 return;
             }
@@ -45,7 +45,7 @@ public class Libreria {
 
     public boolean modificaLibro(String isbn, Libro nuovo) {
         for (int i = 0; i < libri.size(); i++) {
-            if (libri.get(i).getIsbn().equals(isbn)) {
+            if (libri.get(i).getIsbn().trim().equalsIgnoreCase(isbn.trim())) {
                 libri.set(i,nuovo);
                 ArchivioLibreria.salva(libri);
                 return true;
@@ -69,5 +69,10 @@ public class Libreria {
 
     public List<Libro> eseguiStrategy(LibreriaStrategy strategia) {
         return strategia.esegui(libri);
+    }
+
+    public void reset() {
+        libri.clear();
+        ArchivioLibreria.salva(libri);
     }
 }

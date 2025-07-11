@@ -17,7 +17,7 @@ public class FiltraPerStatoLettura implements LibreriaStrategy {
     public List<Libro> esegui(List<Libro> lib) {
         List<Libro> ret = new ArrayList<>();
         for (Libro l : lib) {
-            if (l.getStato() == stato) {
+            if (l.getStato() != null && l.getStato() == stato) {
                 ret.add(l);
             }
         }

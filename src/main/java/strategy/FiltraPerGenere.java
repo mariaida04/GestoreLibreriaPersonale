@@ -18,7 +18,8 @@ public class FiltraPerGenere implements LibreriaStrategy {
         List<Libro> ret = new ArrayList<>();
         for(Libro l : lib) {
             if (l.getGenere().toLowerCase().replaceAll("\\p{Punct}", "").replaceAll("[\\s.-]", "")
-                    .contains(genere.toLowerCase().replaceAll("\\p{Punct}", "").replaceAll("[\\s.-]", ""))) {                   ret.add(l);
+                    .contains(genere.toLowerCase().replaceAll("\\p{Punct}", "").replaceAll("[\\s.-]", ""))) {
+                ret.add(l);
             }
         }
         return ret;
