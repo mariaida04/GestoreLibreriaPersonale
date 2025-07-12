@@ -4,26 +4,27 @@
     "autore": "Antoine de Saint-Exupéry",
     "isbn": "9872545424",
     "genere": "Fiaba",
-    "valutazione": "CINQUE_STELLE",
+    "valutazione": "TRE_STELLE",
     "stato": "COMPLETATO"
   },
   {
     "titolo": "1984",
     "autore": "George Orwell",
     "isbn": "98725325314",
-    "genere": "Romanzo"
+    "genere": "Romanzo",
+    "stato": "IN_LETTURA"
   },
   {
     "titolo": "I promessi sposi",
     "autore": "Alessandro Manzoni",
     "isbn": "9843652542",
     "genere": "Romanzo",
-    "valutazione": "QUATTRO_STELLE"
+    "valutazione": "CINQUE_STELLE"
   },
   {
     "titolo": "Piccole donne",
     "autore": "Louisa May Alcott",
-    "isbn": "9873513513",
+    "isbn": "98735654432",
     "genere": "Romanzo",
     "valutazione": "TRE_STELLE",
     "stato": "COMPLETATO"

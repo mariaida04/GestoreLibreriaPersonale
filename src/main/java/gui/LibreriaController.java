@@ -60,44 +60,29 @@ public class LibreriaController {
         }
     }
 
-    //aggiustare modifica per i campi valutazione e stato
-    public void modifica(String isbnDaModificare, String nuovoTitolo, String nuovoAutore,
-                         String nuovoIsbn, String nuovoGenere, String nuovaValutazione, String nuovoStato) {
+    public void modifica(String isbnOrig, String nuovoTitolo, String nuovoAutore,
+                         String nuovoIsbn, String nuovoGenere, String valutazioneStr, String statoStr) {
         Libreria libreria = Libreria.getInstance();
-        Libro daModificare = null;
+        Libro libroEsistente = libreria.ottieniLibroDaIsbn(isbnOrig);
 
-        for (Libro libro : libreria.getLibri()) {
-            if (libro.getIsbn().equalsIgnoreCase(isbnDaModificare)) {
-                daModificare = libro;
-                break;
-            }
-        }
-        if (daModificare == null) {
-            JOptionPane.showMessageDialog(frame, "Libro da modificare non trovato.", "Errore", JOptionPane.WARNING_MESSAGE);
+        if (libroEsistente == null) {
+            JOptionPane.showMessageDialog(frame, "Libro da modificare non trovato.");
             return;
         }
 
         try {
-            String titoloFinale = (nuovoTitolo != null && !nuovoTitolo.isBlank()) ? nuovoTitolo : daModificare.getTitolo();
-            String autoreFinale = (nuovoAutore != null && !nuovoAutore.isBlank()) ? nuovoAutore : daModificare.getAutore();
-            String genereFinale = (nuovoGenere != null && !nuovoGenere.isBlank()) ? nuovoGenere : daModificare.getGenere();
-            String isbnFinale = (nuovoIsbn != null && !nuovoIsbn.isBlank()) ? nuovoIsbn : daModificare.getIsbn();
+            Valutazione valutazione = (valutazioneStr != null) ? Valutazione.valueOf(valutazioneStr) : null;
+            StatoLettura stato = (statoStr != null) ? StatoLettura.valueOf(statoStr) : null;
 
-            Valutazione valFinale = (!"Seleziona".equals(nuovaValutazione)) ? Valutazione.valueOf(nuovaValutazione) : daModificare.getValutazione();
-            StatoLettura statoFinale = (!"Seleziona".equals(nuovoStato)) ? StatoLettura.valueOf(nuovoStato) : daModificare.getStato();
+            Libro modificato = LibroFactory.creaLibro(nuovoTitolo, nuovoAutore, nuovoIsbn, nuovoGenere, valutazione, stato);
 
-            Libro modificato = LibroFactory.creaLibro(titoloFinale,autoreFinale,isbnFinale,genereFinale,valFinale,statoFinale);
-
-            Command command = new ModificaLibroCommand(libreria, modificato, isbnDaModificare);
+            Command command = new ModificaLibroCommand(libreria, modificato, isbnOrig);
             command.esegui();
 
             frame.mostraLibreria();
         }
         catch (IllegalArgumentException e) {
-            JOptionPane.showMessageDialog(frame, "Valori non validi: " + e.getMessage(), "Errore", JOptionPane.ERROR_MESSAGE);
-        }
-        catch (Exception e) {
-            JOptionPane.showMessageDialog(frame, "Errore nella modifica: " + e.getMessage(), "Errore", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(frame, "Errore: " + e.getMessage(), "Errore", JOptionPane.ERROR_MESSAGE);
         }
     }
 

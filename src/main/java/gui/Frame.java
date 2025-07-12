@@ -51,7 +51,14 @@ public class Frame extends JFrame {
 
         //AREA TESTUALE
         String[] colonne = {"Titolo", "Autore", "ISBN", "Genere", "Valutazione", "Stato"};
-        tableModel = new DefaultTableModel(colonne, 0);
+
+        tableModel = new DefaultTableModel(colonne, 0) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
+
         tabella = new JTable(tableModel);
         JTableHeader header = tabella.getTableHeader();
         header.setBackground(Color.BLUE);
@@ -194,23 +201,35 @@ public class Frame extends JFrame {
     }
 
     private void modificaLibro() {
-        JTextField isbnCercato = new JTextField();
-        JTextField nuovoTitolo = new JTextField();
-        JTextField nuovoAutore = new JTextField();
-        JTextField nuovoGenere = new JTextField();
-        JTextField nuovoIsbn = new JTextField();
+        int rigaSelezionata = tabella.getSelectedRow();
+        if (rigaSelezionata == -1) {
+            JOptionPane.showMessageDialog(this, "Seleziona prima un libro dalla tabella.");
+            return;
+        }
+
+        String isbnOrig = (String) tableModel.getValueAt(rigaSelezionata, 2);
+        String titoloAttuale = (String) tableModel.getValueAt(rigaSelezionata, 0);
+        String autoreAttuale = (String) tableModel.getValueAt(rigaSelezionata, 1);
+        String genereAttuale = (String) tableModel.getValueAt(rigaSelezionata, 3);
+        String valAttuale = (String) tableModel.getValueAt(rigaSelezionata, 4);
+        String statoAttuale = (String) tableModel.getValueAt(rigaSelezionata, 5);
+
+        JTextField nuovoTitolo = new JTextField(titoloAttuale);
+        JTextField nuovoAutore = new JTextField(autoreAttuale);
+        JTextField nuovoGenere = new JTextField(genereAttuale);
+        JTextField nuovoIsbn = new JTextField(isbnOrig);
 
         JComboBox<String> nuovaValutazione = new JComboBox<>(new String[] {
                 "Seleziona","UNA_STELLA","DUE_STELLE","TRE_STELLE","QUATTRO_STELLE","CINQUE_STELLE"
         });
+        nuovaValutazione.setSelectedItem(valAttuale != null ? valAttuale : "Seleziona");
 
         JComboBox<String> nuovoStato = new JComboBox<>(new String[] {
                 "Seleziona","DA_LEGGERE","IN_LETTURA","COMPLETATO"
         });
+        nuovoStato.setSelectedItem(statoAttuale != null ? statoAttuale : "Seleziona");
 
         JPanel panel = new JPanel(new GridLayout(0,1));
-        panel.add(new Label("ISBN del libro da modificare:"));
-        panel.add(isbnCercato);
         panel.add(new Label("Nuovo titolo:"));
         panel.add(nuovoTitolo);
         panel.add(new Label("Nuovo autore:"));
@@ -225,32 +244,35 @@ public class Frame extends JFrame {
         panel.add(nuovoStato);
 
         int res = JOptionPane.showConfirmDialog(this,panel, "Modifica libro",
-                JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+                JOptionPane.OK_CANCEL_OPTION);
 
         if (res == JOptionPane.OK_OPTION) {
-            String isbnDaModificare = isbnCercato.getText().trim();
-
-            if (isbnDaModificare.isEmpty()) {
-                JOptionPane.showMessageDialog(this, "Inserisci l'ISBN del libro da modificare.");
-                return;
-            }
-
-            String titolo = nuovoTitolo.getText();
-            String autore = nuovoAutore.getText();
-            String isbn = nuovoIsbn.getText();
-            String genere = nuovoGenere.getText();
+            String titolo = nuovoTitolo.getText().trim();
+            String autore = nuovoAutore.getText().trim();
+            String isbnNuovo = nuovoIsbn.getText().trim();
+            String genere = nuovoGenere.getText().trim();
             String valutazioneSel = (String) nuovaValutazione.getSelectedItem();
             String statoSel = (String) nuovoStato.getSelectedItem();
 
-            titolo = (titolo != null && !titolo.trim().isEmpty()) ? titolo.trim() : null;
-            autore = (autore != null && !autore.trim().isEmpty()) ? autore.trim() : null;
-            isbn = (isbn != null && !isbn.isEmpty()) ? isbn.trim() : null;
-            genere = (genere != null && !genere.trim().isEmpty()) ? genere.trim() : null;
+            if (titolo.isEmpty() || autore.isEmpty() || isbnNuovo.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Titolo, autore e ISBN non possono essere vuoti.");
+                return;
+            }
 
-            valutazioneSel = (valutazioneSel != null && valutazioneSel.equals("Seleziona")) ? null : valutazioneSel;
-            statoSel = (statoSel != null && statoSel.equals("Seleziona")) ? null : statoSel;
+            //se viene modificato l'ISBN, verifica che non sia già presente
+            if (!isbnNuovo.equalsIgnoreCase(isbnOrig)) {
+                for (Libro l : Libreria.getInstance().getLibri()) {
+                    if (l.getIsbn().equalsIgnoreCase(isbnNuovo)) {
+                        JOptionPane.showMessageDialog(this, "Esiste già un libro con questo nuovo ISBN.");
+                        return;
+                    }
+                }
+            }
 
-            controller.modifica(isbnDaModificare, titolo, autore, isbn, genere, valutazioneSel, statoSel);
+            String valEff = valutazioneSel.equals("Seleziona") ? null : valutazioneSel;
+            String statoEff = statoSel.equals("Seleziona") ? null : statoSel;
+
+            controller.modifica(isbnOrig, titolo, autore, isbnNuovo, genere, valEff, statoEff);
         }
     }
 

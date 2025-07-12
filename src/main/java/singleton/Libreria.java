@@ -75,4 +75,13 @@ public class Libreria {
         libri.clear();
         ArchivioLibreria.salva(libri);
     }
+
+    public Libro ottieniLibroDaIsbn(String isbn) {
+        for (Libro l : libri) {
+            if (l.getIsbn().equalsIgnoreCase(isbn)) {
+                return l;
+            }
+        }
+        return null;
+    }
 }

@@ -1,6 +1,7 @@
 import builder.Libro;
 import builder.StatoLettura;
 import builder.Valutazione;
+import factoryMethod.LibroFactory;
 import org.junit.jupiter.api.*;
 import strategy.FiltraPerGenere;
 import strategy.LibreriaStrategy;
@@ -15,10 +16,10 @@ public class FiltraPerGenereTest {
 
     @BeforeEach
     public void listaLibri() {
-        l1 = new Libro.Builder("Titolo A", "Autore A", "9788804563").genere(" Romanzo ").valutazione(Valutazione.CINQUE_STELLE).stato(StatoLettura.IN_LETTURA).build();
-        l2 = new Libro.Builder("Titolo B", "Autore B", "9788646184").genere("Giallo").valutazione(Valutazione.CINQUE_STELLE).stato(StatoLettura.IN_LETTURA).build();
-        l3 = new Libro.Builder("Titolo C", "Autore C", "9788809124").genere("Fantasy").valutazione(Valutazione.CINQUE_STELLE).stato(StatoLettura.IN_LETTURA).build();
-        l4 = new Libro.Builder("Titolo D", "Autore D", "9788866165").genere("romanzo").valutazione(Valutazione.CINQUE_STELLE).stato(StatoLettura.IN_LETTURA).build();
+        l1 = LibroFactory.creaLibro("Titolo A", "Autore A", "9788804563"," Romanzo ",Valutazione.CINQUE_STELLE,StatoLettura.IN_LETTURA);
+        l2 = LibroFactory.creaLibro("Titolo B", "Autore B", "9788646184","Giallo",Valutazione.CINQUE_STELLE,StatoLettura.IN_LETTURA);
+        l3 = LibroFactory.creaLibro("Titolo C", "Autore C", "9788809124","Fantasy",Valutazione.CINQUE_STELLE,StatoLettura.IN_LETTURA);
+        l4 = LibroFactory.creaLibro("Titolo D", "Autore D", "9788866165","romanzo",Valutazione.CINQUE_STELLE,StatoLettura.IN_LETTURA);
 
         lista = new ArrayList<>();
         lista.add(l1);

@@ -1,6 +1,7 @@
 import builder.Libro;
 import builder.StatoLettura;
 import builder.Valutazione;
+import factoryMethod.LibroFactory;
 import org.junit.jupiter.api.*;
 import strategy.FiltraPerStatoLettura;
 import strategy.LibreriaStrategy;
@@ -15,15 +16,15 @@ public class FiltraPerStatoLetturaTest {
 
     @BeforeEach
     public void listaLibri() {
-        l1 = new Libro.Builder("Il piccolo principe", "Antoine de Saint-Exupéry", "9788448785").genere("Fiaba")
-                .stato(StatoLettura.COMPLETATO).valutazione(Valutazione.DUE_STELLE).build();
-        l2 = new Libro.Builder("il codice da Vinci", "Dan Brown", "9789476585").genere("Thriller")
-                .stato(StatoLettura.IN_LETTURA).valutazione(Valutazione.UNA_STELLA).build();
-        l3 = new Libro.Builder("Harry Potter e la pietra filosofale", "J.K. Rowling", "9784137885").genere("Fantasy")
-                .stato(StatoLettura.COMPLETATO).valutazione(Valutazione.CINQUE_STELLE).build();
-        l4 = new Libro.Builder("1984", "George Orwell", "9787548785").genere("Romanzo")
-                .stato(StatoLettura.COMPLETATO).valutazione(Valutazione.CINQUE_STELLE).build();
-        l5 = new Libro.Builder("Piccole donne", "Louisa May Alcott", "9787572635").genere("Romanzo").build();
+        l1 = LibroFactory.creaLibro("Il piccolo principe", "Antoine de Saint-Exupéry", "9788448785","Fiaba",
+                 Valutazione.DUE_STELLE,StatoLettura.COMPLETATO);
+        l2 = LibroFactory.creaLibro("il codice da Vinci", "Dan Brown", "9789476585","Thriller",
+                Valutazione.UNA_STELLA,StatoLettura.IN_LETTURA);
+        l3 = LibroFactory.creaLibro("Harry Potter e la pietra filosofale", "J.K. Rowling", "9784137885","Fantasy",
+                Valutazione.CINQUE_STELLE,StatoLettura.COMPLETATO);
+        l4 = LibroFactory.creaLibro("1984", "George Orwell", "9787548785","Romanzo",
+                Valutazione.CINQUE_STELLE,StatoLettura.COMPLETATO);
+        l5 = LibroFactory.creaLibro("Piccole donne", "Louisa May Alcott", "9787572635","Romanzo",null,null);
 
 
         lista = new ArrayList<>();
