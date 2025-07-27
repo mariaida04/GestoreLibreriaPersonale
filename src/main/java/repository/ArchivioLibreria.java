@@ -8,7 +8,6 @@ import java.io.*;
 import java.lang.reflect.Type;
 import java.util.List;
 
-
 public class ArchivioLibreria {
     private static final String nomeFile = "data/libreria.json";
     private static final Gson gson = new GsonBuilder().setPrettyPrinting().create();

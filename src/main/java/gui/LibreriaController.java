@@ -10,7 +10,6 @@ import command.RimuoviLibroCommand;
 import factoryMethod.LibroFactory;
 import singleton.Libreria;
 import strategy.*;
-
 import javax.swing.*;
 import java.util.List;
 
@@ -33,6 +32,8 @@ public class LibreriaController {
             comando.esegui();
 
             frame.mostraLibreria();
+        } catch (IllegalArgumentException e) {
+            JOptionPane.showMessageDialog(frame, e.getMessage(), "Errore", JOptionPane.ERROR_MESSAGE);
         } catch (Exception e) {
             JOptionPane.showMessageDialog(frame, "Errore nella creazione del libro: " + e.getMessage(),
                     "Errore", JOptionPane.ERROR_MESSAGE);
@@ -43,7 +44,7 @@ public class LibreriaController {
         Libreria libreria = Libreria.getInstance();
         Libro daRimuovere = null;
 
-        for(Libro libro: libreria.getLibri()) {
+        for (Libro libro: libreria.getLibri()) {
             if (libro.getIsbn().equalsIgnoreCase(isbn)) {
                 daRimuovere = libro;
                 break;
@@ -162,14 +163,13 @@ public class LibreriaController {
                 strategia = new FiltraPerGenere(valore);
                 break;
             case "Stato":
-                try {   //controllo se il valore è valido
-                    StatoLettura stato = StatoLettura.valueOf(valore.toUpperCase());
-                    strategia = new FiltraPerStatoLettura(stato);
-                }
-                catch (IllegalArgumentException e) {
-                    JOptionPane.showMessageDialog(frame,"Stato di lettura non valido.");
+                //controllo se il valore è valido
+                StatoLettura stato = convertiStato(valore);
+                if (stato == null) {
+                    JOptionPane.showMessageDialog(frame, "Stato di lettura non valido.");
                     return;
                 }
+                strategia = new FiltraPerStatoLettura(stato);
                 break;
             default:
                 JOptionPane.showMessageDialog(frame,"Criterio di filtro non valido");
@@ -178,5 +178,24 @@ public class LibreriaController {
 
         List<Libro> risultato = strategia.esegui(Libreria.getInstance().getLibri());
         frame.mostraLibri(risultato);
+    }
+
+    private StatoLettura convertiStato(String input) {
+        input = input.trim().toLowerCase();
+
+        switch (input) {
+            case "da leggere":
+            case "da_leggere":
+            case "daleggere":
+                return StatoLettura.DA_LEGGERE;
+            case "in lettura":
+            case "in_lettura":
+            case "inlettura":
+                return StatoLettura.IN_LETTURA;
+            case "completato":
+                return StatoLettura.COMPLETATO;
+            default:
+                return null;
+        }
     }
 }

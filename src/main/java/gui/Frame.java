@@ -28,7 +28,6 @@ public class Frame extends JFrame {
         setLocationRelativeTo(null);  //per far apparire al centro la finestra
         setLayout(new BorderLayout());
 
-
         //COMANDI
         //layout
         JPanel comandiPanel = new JPanel();

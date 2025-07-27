@@ -2,7 +2,6 @@ package strategy;
 
 import builder.Libro;
 import builder.StatoLettura;
-
 import java.util.ArrayList;
 import java.util.List;
 

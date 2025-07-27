@@ -25,8 +25,7 @@ public class Libreria {
     public void aggiungiLibro(Libro libro) {
         for (Libro l : libri) {
             if (l.getIsbn().trim().equalsIgnoreCase(libro.getIsbn().trim())) {
-                System.out.println("Libro già presente con ISBN: " + libro.getIsbn());
-                return;
+                throw new IllegalArgumentException("Libro già presente con ISBN: " + libro.getIsbn());
             }
         }
         libri.add(libro);
@@ -37,9 +36,6 @@ public class Libreria {
         if (libri.contains(libro)) {
             libri.remove(libro);
             ArchivioLibreria.salva(libri);
-        }
-        else {
-            System.out.println("Libro non presente!");
         }
     }
 
