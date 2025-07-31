@@ -10,7 +10,6 @@ public class Libro {
     private Valutazione valutazione;
     private StatoLettura stato;
 
-    //pattern Builder come costruttore
     public static class Builder {
 
         //parametri obbligatori
