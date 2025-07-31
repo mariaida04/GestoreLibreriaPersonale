@@ -57,7 +57,7 @@ public class Libro {
     }
 
     //costruttore Libro
-    public Libro(Builder builder) {
+    private Libro(Builder builder) {
         this.titolo = builder.titolo;
         this.autore = builder.autore;
         this.isbn = builder.isbn;
