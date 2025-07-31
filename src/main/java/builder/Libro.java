@@ -1,5 +1,4 @@
 package builder;
-
 import java.util.Objects;
 
 public class Libro {

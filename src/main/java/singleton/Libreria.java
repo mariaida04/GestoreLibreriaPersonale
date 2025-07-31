@@ -3,13 +3,12 @@ package singleton;
 import builder.Libro;
 import repository.ArchivioLibreria;
 import strategy.LibreriaStrategy;
-
 import java.util.ArrayList;
 import java.util.List;
 
 public class Libreria {
     private static Libreria instance = null;
-    private List<Libro> libri = new ArrayList<>();
+    private List<Libro> libri;
 
     private Libreria() {
         this.libri = ArchivioLibreria.carica();
