@@ -1,5 +1,6 @@
 import builder.Libro;
 import factoryMethod.LibroFactory;
+import factoryMethod.LibroConcreteFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import singleton.Libreria;
@@ -7,8 +8,11 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class AggiuntaLibroTest {
 
+    private LibroFactory factory;
+
     @BeforeEach
     public void svuota() {
+        factory = new LibroConcreteFactory();
         Libreria.getInstance().reset();
     }
 
@@ -16,7 +20,7 @@ public class AggiuntaLibroTest {
     public void testAggiuntaLibro() {
         Libreria libreria = Libreria.getInstance();
 
-        Libro libro = LibroFactory.creaLibro("I promessi sposi", "Alessandro Manzoni", "9785721938","Romanzo",null,null);
+        Libro libro = factory.creaLibro("I promessi sposi", "Alessandro Manzoni", "9785721938","Romanzo",null,null);
         libreria.aggiungiLibro(libro);
 
         assertEquals(1, libreria.getLibri().size());
@@ -27,8 +31,8 @@ public class AggiuntaLibroTest {
     public void testAggiuntaLibriUgualeISBN() {
         Libreria libreria = Libreria.getInstance();
 
-        Libro l1 = LibroFactory.creaLibro("I promessi sposi", "Alessandro Manzoni", "9785721938","Romanzo",null,null);
-        Libro l2 = LibroFactory.creaLibro("Il piccolo principe", "Antoine de Saint-Exupéry", "9785721938","Fiaba",null,null);
+        Libro l1 = factory.creaLibro("I promessi sposi", "Alessandro Manzoni", "9785721938","Romanzo",null,null);
+        Libro l2 = factory.creaLibro("Il piccolo principe", "Antoine de Saint-Exupéry", "9785721938","Fiaba",null,null);
 
         libreria.aggiungiLibro(l1);
         libreria.aggiungiLibro(l2);

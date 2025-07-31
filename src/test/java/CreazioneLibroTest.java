@@ -1,4 +1,5 @@
 import factoryMethod.LibroFactory;
+import factoryMethod.LibroConcreteFactory;
 import org.junit.jupiter.api.*;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -6,8 +7,9 @@ public class CreazioneLibroTest {
 
     @Test
     public void testCreazioneLibroSenzaISBN() {
+        LibroFactory factory = new LibroConcreteFactory();
         Exception e = assertThrows(IllegalArgumentException.class, () -> {
-                LibroFactory.creaLibro("Il piccolo principe", "Antoine de Saint-Exupéry", " ",null,null,null);
+                factory.creaLibro("Il piccolo principe", "Antoine de Saint-Exupéry", " ",null,null,null);
     });
 
         assertEquals("ISBN obbligatorio", e.getMessage());
@@ -15,8 +17,9 @@ public class CreazioneLibroTest {
 
     @Test
     public void testCreazioneLibroSenzaTitolo() {
+        LibroFactory factory = new LibroConcreteFactory();
         Exception e = assertThrows(IllegalArgumentException.class, () -> {
-            LibroFactory.creaLibro(" ", "Antoine de Saint-Exupéry", "9788663741 ",null,null,null);
+                factory.creaLibro(" ", "Antoine de Saint-Exupéry", "9788663741 ",null,null,null);
         });
 
         assertEquals("Titolo obbligatorio", e.getMessage());
@@ -24,8 +27,9 @@ public class CreazioneLibroTest {
 
     @Test
     public void testCreazioneLibroSenzaAutore() {
+        LibroFactory factory = new LibroConcreteFactory();
         Exception e = assertThrows(IllegalArgumentException.class, () -> {
-            LibroFactory.creaLibro("Il piccolo principe", " ", "9788663741",null,null,null);
+                factory.creaLibro("Il piccolo principe", " ", "9788663741",null,null,null);
         });
 
         assertEquals("Autore obbligatorio", e.getMessage());
@@ -33,8 +37,9 @@ public class CreazioneLibroTest {
 
     @Test
     public void testCreazioneLibroAutoreNull() {
+        LibroFactory factory = new LibroConcreteFactory();
         Exception e = assertThrows(IllegalArgumentException.class, () -> {
-            LibroFactory.creaLibro("Il piccolo principe", null, "9788663741",null,null,null);
+                factory.creaLibro("Il piccolo principe", null, "9788663741",null,null,null);
         });
 
         assertEquals("Autore obbligatorio", e.getMessage());

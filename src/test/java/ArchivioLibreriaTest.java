@@ -5,6 +5,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import factoryMethod.LibroFactory;
+import factoryMethod.LibroConcreteFactory;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import java.io.*;
@@ -26,7 +27,8 @@ public class ArchivioLibreriaTest {
     @Test
     public void testSalvaECarica() throws IOException {
         List<Libro> libriDaSalvare = new ArrayList<>();
-        Libro l1 = LibroFactory.creaLibro("1984","George Orwell","9786662434","Romanzo",
+        LibroFactory factory = new LibroConcreteFactory();
+        Libro l1 = factory.creaLibro("1984","George Orwell","9786662434","Romanzo",
                 Valutazione.QUATTRO_STELLE,StatoLettura.IN_LETTURA);
         libriDaSalvare.add(l1);
 

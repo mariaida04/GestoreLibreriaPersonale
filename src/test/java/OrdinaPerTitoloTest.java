@@ -2,6 +2,7 @@ import builder.Libro;
 import builder.StatoLettura;
 import builder.Valutazione;
 import factoryMethod.LibroFactory;
+import factoryMethod.LibroConcreteFactory;
 import org.junit.jupiter.api.*;
 import strategy.LibreriaStrategy;
 import strategy.OrdinaPerTitolo;
@@ -13,13 +14,15 @@ public class OrdinaPerTitoloTest {
 
     @Test
     public void testOrdinamentoAlfabetico() {
-        Libro l1 = LibroFactory.creaLibro("Il piccolo principe", "Antoine de Saint-Exupéry", "9788448785","Fiaba",
+        LibroFactory factory = new LibroConcreteFactory();
+
+        Libro l1 = factory.creaLibro("Il piccolo principe", "Antoine de Saint-Exupéry", "9788448785","Fiaba",
                 Valutazione.DUE_STELLE,StatoLettura.COMPLETATO);
-        Libro l2 = LibroFactory.creaLibro("il codice da Vinci", "Dan Brown", "9789476585","Thriller",
+        Libro l2 = factory.creaLibro("il codice da Vinci", "Dan Brown", "9789476585","Thriller",
                 Valutazione.UNA_STELLA,StatoLettura.IN_LETTURA);
-        Libro l3 = LibroFactory.creaLibro("Harry Potter e la pietra filosofale", "J.K. Rowling", "9784137885","Fantasy",
+        Libro l3 = factory.creaLibro("Harry Potter e la pietra filosofale", "J.K. Rowling", "9784137885","Fantasy",
                 Valutazione.CINQUE_STELLE,StatoLettura.COMPLETATO);
-        Libro l4 = LibroFactory.creaLibro("1984", "George Orwell", "9787548785","Romanzo",
+        Libro l4 = factory.creaLibro("1984", "George Orwell", "9787548785","Romanzo",
                 Valutazione.CINQUE_STELLE,StatoLettura.COMPLETATO);
 
         List<Libro> lista = new ArrayList<>();

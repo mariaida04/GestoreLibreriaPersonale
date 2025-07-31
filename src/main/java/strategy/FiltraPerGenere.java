@@ -1,8 +1,6 @@
 package strategy;
 
 import builder.Libro;
-import singleton.Libreria;
-
 import java.util.ArrayList;
 import java.util.List;
 

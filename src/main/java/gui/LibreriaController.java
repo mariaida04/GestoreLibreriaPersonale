@@ -7,6 +7,7 @@ import command.AggiungiLibroCommand;
 import command.Command;
 import command.ModificaLibroCommand;
 import command.RimuoviLibroCommand;
+import factoryMethod.LibroConcreteFactory;
 import factoryMethod.LibroFactory;
 import singleton.Libreria;
 import strategy.*;
@@ -15,9 +16,11 @@ import java.util.List;
 
 public class LibreriaController {
     private Frame frame;
+    private final LibroFactory libroFactory;
 
     public LibreriaController(Frame frame) {
         this.frame = frame;
+        this.libroFactory = new LibroConcreteFactory();
     }
 
     public void aggiunta(String titolo, String autore, String isbn, String genere, String valutazioneStr, String statoStr) {
@@ -26,7 +29,7 @@ public class LibreriaController {
             Valutazione valutazione = (valutazioneStr != null && !valutazioneStr.equals("Seleziona")) ? Valutazione.valueOf(valutazioneStr) : null;
             StatoLettura stato = (statoStr != null && ! statoStr.equals("Seleziona")) ? StatoLettura.valueOf(statoStr) : null;
 
-            Libro libro = LibroFactory.creaLibro(titolo, autore, isbn, genereFinale, valutazione, stato);
+            Libro libro = libroFactory.creaLibro(titolo, autore, isbn, genereFinale, valutazione, stato);
 
             Command comando = new AggiungiLibroCommand(Libreria.getInstance(), libro);
             comando.esegui();
@@ -75,7 +78,7 @@ public class LibreriaController {
             Valutazione valutazione = (valutazioneStr != null) ? Valutazione.valueOf(valutazioneStr) : null;
             StatoLettura stato = (statoStr != null) ? StatoLettura.valueOf(statoStr) : null;
 
-            Libro modificato = LibroFactory.creaLibro(nuovoTitolo, nuovoAutore, nuovoIsbn, nuovoGenere, valutazione, stato);
+            Libro modificato = libroFactory.creaLibro(nuovoTitolo, nuovoAutore, nuovoIsbn, nuovoGenere, valutazione, stato);
 
             Command command = new ModificaLibroCommand(libreria, modificato, isbnOrig);
             command.esegui();

@@ -2,6 +2,7 @@ import builder.Libro;
 import builder.StatoLettura;
 import builder.Valutazione;
 import factoryMethod.LibroFactory;
+import factoryMethod.LibroConcreteFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import singleton.Libreria;
@@ -9,8 +10,11 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class ModificaLibroTest {
 
+    private LibroFactory factory;
+
     @BeforeEach
     public void svuota() {
+        factory = new LibroConcreteFactory();
         Libreria.getInstance().reset();
     }
 
@@ -18,11 +22,11 @@ public class ModificaLibroTest {
     public void testModificaLibro() {
         Libreria libreria = Libreria.getInstance();
 
-        Libro originale = LibroFactory.creaLibro("I promessi sposi", "Alessandro Manzoni", "9785721938","Romanzo",
+        Libro originale = factory.creaLibro("I promessi sposi", "Alessandro Manzoni", "9785721938","Romanzo",
                 Valutazione.TRE_STELLE,StatoLettura.IN_LETTURA);
         libreria.aggiungiLibro(originale);
 
-        Libro modificato = LibroFactory.creaLibro("I promessi sposi", "Alessandro Manzoni", "9785721938","Romanzo",
+        Libro modificato = factory.creaLibro("I promessi sposi", "Alessandro Manzoni", "9785721938","Romanzo",
                 Valutazione.CINQUE_STELLE,StatoLettura.COMPLETATO);
         boolean modifica = libreria.modificaLibro("9785721938",modificato);
 
@@ -37,7 +41,7 @@ public class ModificaLibroTest {
     public void testModificaLibroNonPresente() {
         Libreria libreria = Libreria.getInstance();
 
-        Libro nuovo = LibroFactory.creaLibro("I promessi sposi", "Alessandro Manzoni", "9785721938","Romanzo",
+        Libro nuovo = factory.creaLibro("I promessi sposi", "Alessandro Manzoni", "9785721938","Romanzo",
                 Valutazione.TRE_STELLE,StatoLettura.IN_LETTURA);
 
         boolean modifica = libreria.modificaLibro("9785721938", nuovo);

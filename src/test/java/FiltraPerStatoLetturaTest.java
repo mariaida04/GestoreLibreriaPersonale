@@ -2,6 +2,7 @@ import builder.Libro;
 import builder.StatoLettura;
 import builder.Valutazione;
 import factoryMethod.LibroFactory;
+import factoryMethod.LibroConcreteFactory;
 import org.junit.jupiter.api.*;
 import strategy.FiltraPerStatoLettura;
 import strategy.LibreriaStrategy;
@@ -11,21 +12,23 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class FiltraPerStatoLetturaTest {
 
+    private LibroFactory factory;
     private Libro l1,l2,l3,l4,l5;
     private List<Libro> lista;
 
     @BeforeEach
     public void listaLibri() {
-        l1 = LibroFactory.creaLibro("Il piccolo principe", "Antoine de Saint-Exupéry", "9788448785","Fiaba",
-                 Valutazione.DUE_STELLE,StatoLettura.COMPLETATO);
-        l2 = LibroFactory.creaLibro("il codice da Vinci", "Dan Brown", "9789476585","Thriller",
-                Valutazione.UNA_STELLA,StatoLettura.IN_LETTURA);
-        l3 = LibroFactory.creaLibro("Harry Potter e la pietra filosofale", "J.K. Rowling", "9784137885","Fantasy",
-                Valutazione.CINQUE_STELLE,StatoLettura.COMPLETATO);
-        l4 = LibroFactory.creaLibro("1984", "George Orwell", "9787548785","Romanzo",
-                Valutazione.CINQUE_STELLE,StatoLettura.COMPLETATO);
-        l5 = LibroFactory.creaLibro("Piccole donne", "Louisa May Alcott", "9787572635","Romanzo",null,null);
 
+        factory = new LibroConcreteFactory();
+        l1 = factory.creaLibro("Il piccolo principe", "Antoine de Saint-Exupéry", "9788448785","Fiaba",
+                 Valutazione.DUE_STELLE,StatoLettura.COMPLETATO);
+        l2 = factory.creaLibro("il codice da Vinci", "Dan Brown", "9789476585","Thriller",
+                Valutazione.UNA_STELLA,StatoLettura.IN_LETTURA);
+        l3 = factory.creaLibro("Harry Potter e la pietra filosofale", "J.K. Rowling", "9784137885","Fantasy",
+                Valutazione.CINQUE_STELLE,StatoLettura.COMPLETATO);
+        l4 = factory.creaLibro("1984", "George Orwell", "9787548785","Romanzo",
+                Valutazione.CINQUE_STELLE,StatoLettura.COMPLETATO);
+        l5 = factory.creaLibro("Piccole donne", "Louisa May Alcott", "9787572635","Romanzo",null,null);
 
         lista = new ArrayList<>();
         lista.add(l1);
