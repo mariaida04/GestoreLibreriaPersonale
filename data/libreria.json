@@ -10,20 +10,20 @@
   {
     "titolo": "1984",
     "autore": "George Orwell",
-    "isbn": "98725325314",
+    "isbn": "9872532531",
     "genere": "Romanzo",
     "stato": "IN_LETTURA"
   },
   {
     "titolo": "I promessi sposi",
     "autore": "Alessandro Manzoni",
-    "isbn": "98436525343",
+    "isbn": "9843652534",
     "genere": "Romanzo"
   },
   {
     "titolo": "Piccole donne",
     "autore": "Louisa May Alcott",
-    "isbn": "98735654432",
+    "isbn": "9873565443",
     "genere": "Romanzo",
     "valutazione": "TRE_STELLE",
     "stato": "COMPLETATO"
@@ -31,7 +31,7 @@
   {
     "titolo": "Assassinio sul Nilo",
     "autore": "Agatha Christie",
-    "isbn": "98763424624",
+    "isbn": "9876342462",
     "genere": "Giallo",
     "valutazione": "DUE_STELLE",
     "stato": "IN_LETTURA"
@@ -43,5 +43,13 @@
     "genere": "Giallo",
     "valutazione": "CINQUE_STELLE",
     "stato": "COMPLETATO"
+  },
+  {
+    "titolo": "La Divina Commedia",
+    "autore": "Dante Alighieri",
+    "isbn": "9785423143",
+    "genere": "Poema allegorico",
+    "valutazione": "CINQUE_STELLE",
+    "stato": "DA_LEGGERE"
   }
 ]

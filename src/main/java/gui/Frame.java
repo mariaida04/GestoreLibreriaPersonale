@@ -60,7 +60,7 @@ public class Frame extends JFrame {
 
         tabella = new JTable(tableModel);
         JTableHeader header = tabella.getTableHeader();
-        header.setBackground(Color.WHITE);
+        header.setBackground(Color.LIGHT_GRAY);
         header.setFont(new Font("Arial", Font.BOLD, 14));
         JScrollPane scrollPane = new JScrollPane(tabella);
         scrollPane.setPreferredSize(new Dimension(800,300));
@@ -241,9 +241,13 @@ public class Frame extends JFrame {
         }
         else {
             for (Libro l : lista) {
-                Object[] riga = { l.getTitolo(), l.getAutore(), l.getIsbn(),
-                        l.getGenere(), l.getValutazione() != null ? l.getValutazione().name() : "",
-                        l.getStato() != null ? l.getStato().name() : ""
+                Object[] riga = {
+                        l.getTitolo(),
+                        l.getAutore(),
+                        l.getIsbn(),
+                        l.getGenere(),
+                        l.getValutazione() != null ? l.getValutazione().toString().replace("_"," ") : "",
+                        l.getStato() != null ? l.getStato().toString().replace("_"," ") : ""
                 };
                 tableModel.addRow(riga);
             }
@@ -262,14 +266,22 @@ public class Frame extends JFrame {
         JTextField isbnField = new JTextField(isbnIn != null ? isbnIn : "");
         JTextField genereField = new JTextField(genereIn != null ? genereIn : "");
 
-        JComboBox<String> valutazioneBox = new JComboBox<>(new String[] {
-                "Seleziona","UNA_STELLA","DUE_STELLE","TRE_STELLE","QUATTRO_STELLE","CINQUE_STELLE"
-        });
+        String[] valutazioniRaw = {"UNA_STELLA", "DUE_STELLE", "TRE_STELLE", "QUATTRO_STELLE", "CINQUE_STELLE"};
+        String[] valutazioniFormattate = new String[valutazioniRaw.length+1];
+        valutazioniFormattate[0] = "Seleziona";
+        for (int i=0; i<valutazioniRaw.length; i++) {
+            valutazioniFormattate[i+1] = valutazioniRaw[i].replace("_"," ");
+        }
+        JComboBox<String> valutazioneBox = new JComboBox<>(valutazioniFormattate);
         valutazioneBox.setSelectedItem(valutazioneIn != null ? valutazioneIn : "Seleziona");
 
-        JComboBox<String> statoBox = new JComboBox<>(new String[] {
-                "Seleziona","DA_LEGGERE","IN_LETTURA","COMPLETATO"
-        });
+        String[] statiRaw = {"DA_LEGGERE","IN_LETTURA","COMPLETATO"};
+        String[] statiFormattati = new String[statiRaw.length+1];
+        statiFormattati[0] = "Seleziona";
+        for (int i=0; i<statiRaw.length; i++) {
+            statiFormattati[i+1] = statiRaw[i].replace("_"," ");
+        }
+        JComboBox<String> statoBox = new JComboBox<>(statiFormattati);
         statoBox.setSelectedItem(statoIn != null ? statoIn : "Seleziona");
 
         JPanel form = new JPanel(new GridLayout(0,1));
@@ -293,8 +305,8 @@ public class Frame extends JFrame {
                     autoreField.getText().trim(),
                     isbnField.getText().trim(),
                     genereField.getText().trim(),
-                    (String) valutazioneBox.getSelectedItem(),
-                    (String) statoBox.getSelectedItem()
+                    ((String) valutazioneBox.getSelectedItem()).replace(" ","_"),
+                    ((String) statoBox.getSelectedItem()).replace(" ","_")
             );
         }
         return null;

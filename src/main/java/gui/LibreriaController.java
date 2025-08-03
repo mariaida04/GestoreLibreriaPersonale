@@ -26,8 +26,8 @@ public class LibreriaController {
     public void aggiunta(String titolo, String autore, String isbn, String genere, String valutazioneStr, String statoStr) {
         try {
             String genereFinale = (genere != null && !genere.isBlank()) ? genere : null;
-            Valutazione valutazione = (valutazioneStr != null && !valutazioneStr.equals("Seleziona")) ? Valutazione.valueOf(valutazioneStr) : null;
-            StatoLettura stato = (statoStr != null && ! statoStr.equals("Seleziona")) ? StatoLettura.valueOf(statoStr) : null;
+            Valutazione valutazione = (valutazioneStr != null && !valutazioneStr.equals("Seleziona")) ? Valutazione.valueOf(valutazioneStr.replace(" ","_")) : null;
+            StatoLettura stato = (statoStr != null && !statoStr.equals("Seleziona")) ? StatoLettura.valueOf(statoStr.replace(" ","_")) : null;
 
             Libro libro = libroFactory.creaLibro(titolo, autore, isbn, genereFinale, valutazione, stato);
 
@@ -75,8 +75,8 @@ public class LibreriaController {
         }
 
         try {
-            Valutazione valutazione = (valutazioneStr != null) ? Valutazione.valueOf(valutazioneStr) : null;
-            StatoLettura stato = (statoStr != null) ? StatoLettura.valueOf(statoStr) : null;
+            Valutazione valutazione = (valutazioneStr != null) ? Valutazione.valueOf(valutazioneStr.replace(" ","_")) : null;
+            StatoLettura stato = (statoStr != null) ? StatoLettura.valueOf(statoStr.replace(" ","_")) : null;
 
             Libro modificato = libroFactory.creaLibro(nuovoTitolo, nuovoAutore, nuovoIsbn, nuovoGenere, valutazione, stato);
 
@@ -180,7 +180,12 @@ public class LibreriaController {
         }
 
         List<Libro> risultato = strategia.esegui(Libreria.getInstance().getLibri());
-        frame.mostraLibri(risultato);
+        if (risultato.isEmpty()) {
+            JOptionPane.showMessageDialog(frame, "Nessun libro trovato.", "Risultato filtraggio",JOptionPane.INFORMATION_MESSAGE);
+        }
+        else {
+            frame.mostraLibri(risultato);
+        }
     }
 
     private StatoLettura convertiStato(String input) {
