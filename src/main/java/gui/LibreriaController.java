@@ -118,7 +118,7 @@ public class LibreriaController {
             }
             List<Libro> risultati = strategia.esegui(Libreria.getInstance().getLibri());
             if (risultati.isEmpty()) {
-                JOptionPane.showMessageDialog(frame, "Nessun libro trovato.");
+                JOptionPane.showMessageDialog(frame, "Nessun libro trovato.", "Risultato ricerca",JOptionPane.INFORMATION_MESSAGE);
             }
             else {
                 frame.mostraLibri(risultati);
