@@ -89,6 +89,31 @@ public class Libro {
         return stato;
     }
 
+    //metodi setter
+    public void setTitolo(String titolo) {
+        this.titolo = titolo;
+    }
+
+    public void setAutore(String autore) {
+        this.autore = autore;
+    }
+
+    public void setIsbn(String isbn) {
+        this.isbn = isbn;
+    }
+
+    public void setGenere(String genere) {
+        this.genere = genere;
+    }
+
+    public void setValutazione(Valutazione valutazione) {
+        this.valutazione = valutazione;
+    }
+
+    public void setStato(StatoLettura stato) {
+        this.stato = stato;
+    }
+
     @Override
     public String toString() {
         return "Libro: {" +
